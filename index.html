@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ssh-wrappers · two tiny ssh helpers</title>
+<meta name="description" content="Two small POSIX shell wrappers around ssh: force password auth (sshp) or restrict to explicit keys (sshi). One-liner install via curl.">
+<meta name="theme-color" content="#0a0e1a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fafbff" media="(prefers-color-scheme: light)">
+<link rel="canonical" href="https://github.com/pacnpal/ssh-wrappers">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2360a5fa'/%3E%3Cstop offset='1' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='7' fill='url(%23g)'/%3E%3Cpath d='M9 11l5 5-5 5M16 21h7' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fafbff;
+    --bg-2: #ffffff;
+    --fg: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --code-bg: #f1f5f9;
+    --code-fg: #0f172a;
+    --accent: #6366f1;
+    --accent-2: #8b5cf6;
+    --accent-soft: rgba(99, 102, 241, .1);
+    --green: #10b981;
+    --shadow: 0 1px 3px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.05);
+    --shadow-hover: 0 1px 3px rgba(15,23,42,.08), 0 12px 32px rgba(99,102,241,.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0e1a;
+      --bg-2: #111827;
+      --fg: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #1e293b;
+      --code-bg: #0f172a;
+      --code-fg: #e2e8f0;
+      --accent: #818cf8;
+      --accent-2: #a78bfa;
+      --accent-soft: rgba(129, 140, 248, .14);
+      --green: #34d399;
+      --shadow: 0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.3);
+      --shadow-hover: 0 1px 3px rgba(0,0,0,.4), 0 12px 32px rgba(129,140,248,.18);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 4rem;
+  }
+
+  /* hero */
+  .hero { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+  .logo {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    box-shadow: 0 8px 24px rgba(99,102,241,.3);
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .logo svg { width: 28px; height: 28px; }
+  .hero h1 {
+    font-size: 2.1rem;
+    margin: 0;
+    letter-spacing: -.02em;
+    background: linear-gradient(135deg, var(--fg) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .tag { color: var(--muted); margin: 0 0 2.5rem; font-size: 1.05rem; }
+  .tag code { background: var(--code-bg); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
+
+  /* wrapper cards */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
+  @media (max-width: 36rem) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem;
+    box-shadow: var(--shadow);
+    transition: transform .15s, box-shadow .15s, border-color .15s;
+    text-decoration: none;
+    color: var(--fg);
+    display: block;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: var(--accent); }
+  .card-head { display: flex; align-items: center; gap: .6rem; margin-bottom: .4rem; }
+  .card-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: grid; place-items: center;
+  }
+  .card-icon svg { width: 18px; height: 18px; }
+  .card-name { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-weight: 600; font-size: 1rem; }
+  .card p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.5; }
+
+  /* section labels */
+  h2 {
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 .75rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  h2 svg { width: 14px; height: 14px; opacity: .7; }
+
+  /* install codeblock */
+  .install {
+    position: relative;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    margin-bottom: .75rem;
+    box-shadow: var(--shadow);
+  }
+  .install pre {
+    margin: 0;
+    padding-right: 5rem;
+    font: 13.5px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    color: var(--code-fg);
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .install pre::-webkit-scrollbar { height: 6px; }
+  .install pre::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .install .prompt { color: var(--muted); user-select: none; margin-right: .35rem; }
+  .copy {
+    position: absolute;
+    top: .55rem;
+    right: .55rem;
+    border: 1px solid var(--border);
+    background: var(--bg-2);
+    color: var(--fg);
+    font: inherit;
+    font-size: .8rem;
+    font-weight: 500;
+    padding: .35rem .65rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    transition: background .15s, border-color .15s, color .15s, transform .1s;
+  }
+  .copy svg { width: 13px; height: 13px; }
+  .copy:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .copy:active { transform: scale(.97); }
+  .copy.copied { background: var(--accent-soft); border-color: var(--green); color: var(--green); }
+
+  .features {
+    color: var(--muted);
+    font-size: .9rem;
+    margin: 0 0 2.5rem;
+    list-style: none;
+    padding: 0;
+  }
+  .features li { display: flex; align-items: flex-start; gap: .55rem; margin: .4rem 0; }
+  .features li svg { width: 14px; height: 14px; margin-top: .25rem; color: var(--green); flex-shrink: 0; }
+  .features code { font-size: .85em; background: var(--code-bg); padding: .05rem .3rem; border-radius: 3px; color: var(--code-fg); }
+
+  /* link buttons */
+  .links { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: var(--bg-2);
+    padding: .5rem .85rem;
+    border-radius: 8px;
+    font-size: .88rem;
+    font-weight: 500;
+    color: var(--fg);
+    transition: background .15s, border-color .15s, color .15s, transform .1s;
+  }
+  .links a:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .links a:active { transform: scale(.98); }
+  .links a svg { width: 15px; height: 15px; }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: .82rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- shared symbol defs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="7.5" cy="15.5" r="3.5"/>
+      <path d="M10 13l8.5-8.5M16 7l3 3M14 9l3 3"/>
+    </symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="11" width="16" height="10" rx="2"/>
+      <path d="M8 11V7a4 4 0 1 1 8 0v4"/>
+    </symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 17l6-6-6-6M12 19h8"/>
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>
+    </symbol>
+    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 4h7a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H4zM20 4h-3a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h4z"/>
+    </symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="9" width="11" height="11" rx="2"/>
+      <path d="M5 15V5a2 2 0 0 1 2-2h10"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 13l4 4L19 7"/>
+    </symbol>
+    <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 .5C5.6.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.4-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2 1-.3 2-.4 3-.4s2 .1 3 .4c2.3-1.6 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.4.5 12 .5z"/>
+    </symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13 2L3 14h7l-1 8 10-12h-7z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 8l5 4-5 4M11 16h8"/>
+      </svg>
+    </div>
+    <h1>ssh-wrappers</h1>
+  </div>
+
+  <p class="tag">Two tiny POSIX shell wrappers around <code>ssh</code> that fix the most common day-to-day annoyances with key vs. password auth.</p>
+
+  <div class="grid">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshp.md">
+      <div class="card-head">
+        <div class="card-icon"><svg><use href="#i-lock"/></svg></div>
+        <div class="card-name">sshp</div>
+      </div>
+      <p>Force <strong>p</strong>assword auth — disable pubkey for one connection. Stops the agent from burning all your <code>MaxAuthTries</code> on keys before the server can ask for a password.</p>
+    </a>
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshi.md">
+      <div class="card-head">
+        <div class="card-icon"><svg><use href="#i-key"/></svg></div>
+        <div class="card-name">sshi</div>
+      </div>
+      <p>Use only explicitly configured <strong>i</strong>dentities (<code>IdentitiesOnly=yes</code>). Pin one key per host instead of letting the agent shotgun every loaded key.</p>
+    </a>
+  </div>
+
+  <h2><svg><use href="#i-download"/></svg>Install</h2>
+  <div class="install">
+    <pre id="install-cmd"><span class="prompt">$</span>curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh</pre>
+    <button type="button" class="copy" id="copy" aria-label="Copy install command">
+      <svg><use href="#i-copy"/></svg><span id="copy-label">Copy</span>
+    </button>
+  </div>
+
+  <ul class="features">
+    <li><svg><use href="#i-check"/></svg>Auto-detects your shell (zsh, bash, ksh) and writes to the right rc file</li>
+    <li><svg><use href="#i-check"/></svg>Idempotent — safe to re-run; never silently shadows existing definitions</li>
+    <li><svg><use href="#i-check"/></svg><code>--force</code> to override, <code>--uninstall</code> to cleanly remove</li>
+    <li><svg><use href="#i-check"/></svg>POSIX shell only, no dependencies</li>
+  </ul>
+
+  <h2><svg><use href="#i-book"/></svg>Docs &amp; source</h2>
+  <div class="links">
+    <a href="https://github.com/pacnpal/ssh-wrappers#readme">
+      <svg><use href="#i-book"/></svg>README
+    </a>
+    <a href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshp.md">
+      <svg><use href="#i-lock"/></svg>sshp
+    </a>
+    <a href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshi.md">
+      <svg><use href="#i-key"/></svg>sshi
+    </a>
+    <a href="install.sh">
+      <svg><use href="#i-terminal"/></svg>install.sh
+    </a>
+    <a href="https://github.com/pacnpal/ssh-wrappers">
+      <svg><use href="#i-github"/></svg>GitHub
+    </a>
+  </div>
+
+  <footer>
+    <span>MIT licensed · <a href="https://github.com/pacnpal/ssh-wrappers/blob/master/LICENSE">LICENSE</a></span>
+    <span><a href="https://github.com/pacnpal/ssh-wrappers"><svg width="14" height="14" style="vertical-align:-2px"><use href="#i-github"/></svg> pacnpal/ssh-wrappers</a></span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var btn = document.getElementById('copy');
+  var label = document.getElementById('copy-label');
+  var cmd = document.getElementById('install-cmd');
+  if (!btn || !cmd) return;
+  btn.addEventListener('click', function () {
+    // strip the visual prompt span
+    var text = cmd.textContent.replace(/^\s*\$\s*/, '');
+    var done = function () {
+      label.textContent = 'Copied';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        label.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(function () { fallback(text); done(); });
+    } else {
+      fallback(text); done();
+    }
+  });
+  function fallback(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'absolute';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+})();
+</script>
+</body>
+</html>
