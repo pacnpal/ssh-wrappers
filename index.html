@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ssh-wrappers · two tiny ssh helpers</title>
-<meta name="description" content="Two small POSIX shell wrappers around ssh: force password auth (sshp) or restrict to explicit keys (sshi). One-liner install via curl.">
+<title>ssh-wrappers · nine small ssh helpers</title>
+<meta name="description" content="Nine small POSIX shell wrappers around ssh that fix the most common day-to-day annoyances. One-liner install via curl, with selective install for any subset.">
 <meta name="theme-color" content="#0a0e1a" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#fafbff" media="(prefers-color-scheme: light)">
 <link rel="canonical" href="https://pacnpal.github.io/ssh-wrappers/">
@@ -15,17 +15,18 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://pacnpal.github.io/ssh-wrappers/">
 <meta property="og:title" content="ssh-wrappers">
-<meta property="og:description" content="Two tiny POSIX shell wrappers around ssh: force password auth (sshp) or restrict to explicit keys (sshi). One-liner install via curl.">
+<meta property="og:description" content="Nine small POSIX shell wrappers around ssh that fix the most common day-to-day annoyances. One-liner install via curl.">
 <meta property="og:image" content="https://pacnpal.github.io/ssh-wrappers/assets/social-card.png">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="640">
-<meta property="og:image:alt" content="ssh-wrappers logo with the install one-liner">
+<meta property="og:image:alt" content="ssh-wrappers — nine small ssh helpers">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ssh-wrappers">
-<meta name="twitter:description" content="Two tiny POSIX shell wrappers around ssh: sshp forces password auth, sshi restricts to explicit keys.">
+<meta name="twitter:description" content="Nine small POSIX shell wrappers around ssh: sshp, sshi, ssha, sshq, sshk, sshm, ssht, sshc, sshv.">
 <meta name="twitter:image" content="https://pacnpal.github.io/ssh-wrappers/assets/social-card.png">
+
 <style>
   :root {
     color-scheme: light dark;
@@ -70,13 +71,13 @@
     -webkit-font-smoothing: antialiased;
   }
   .wrap {
-    max-width: 44rem;
+    max-width: 56rem;
     margin: 0 auto;
     padding: 3.5rem 1.5rem 4rem;
   }
 
   /* hero */
-  .hero { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+  .hero { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
   .logo {
     width: 56px; height: 56px;
     border-radius: 14px;
@@ -96,12 +97,39 @@
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
-  .tag { color: var(--muted); margin: 0 0 2.5rem; font-size: 1.05rem; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--accent-soft);
+    padding: .2rem .55rem;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 600;
+    margin-left: auto;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  .tag { color: var(--muted); margin: 0 0 2.5rem; font-size: 1.05rem; max-width: 38rem; }
   .tag code { background: var(--code-bg); padding: .1rem .35rem; border-radius: 4px; font-size: .9em; }
 
+  /* category strip */
+  .cats {
+    display: flex; flex-wrap: wrap; gap: .35rem .8rem;
+    color: var(--muted); font-size: .82rem; margin-bottom: 1rem;
+    text-transform: uppercase; letter-spacing: .06em; font-weight: 600;
+  }
+  .cats span { display: inline-flex; align-items: center; gap: .4rem; }
+  .cats .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
   /* wrapper cards */
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
-  @media (max-width: 36rem) { .grid { grid-template-columns: 1fr; } }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
   .card {
     background: var(--bg-2);
     border: 1px solid var(--border);
@@ -112,19 +140,43 @@
     text-decoration: none;
     color: var(--fg);
     display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    opacity: 0;
+    transition: opacity .15s;
   }
   .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: var(--accent); }
-  .card-head { display: flex; align-items: center; gap: .6rem; margin-bottom: .4rem; }
+  .card:hover::before { opacity: 1; }
+  .card-head { display: flex; align-items: center; gap: .65rem; margin-bottom: .5rem; }
   .card-icon {
-    width: 32px; height: 32px;
-    border-radius: 8px;
+    width: 36px; height: 36px;
+    border-radius: 9px;
     background: var(--accent-soft);
     color: var(--accent);
     display: grid; place-items: center;
+    flex-shrink: 0;
   }
-  .card-icon svg { width: 18px; height: 18px; }
-  .card-name { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-weight: 600; font-size: 1rem; }
-  .card p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.5; }
+  .card-icon svg { width: 19px; height: 19px; }
+  .card-name { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-weight: 600; font-size: 1.05rem; }
+  .card-pill {
+    margin-left: auto;
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--muted);
+    background: var(--code-bg);
+    padding: .15rem .45rem;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .card p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.5; }
 
   /* section labels */
   h2 {
@@ -139,6 +191,7 @@
     gap: .4rem;
   }
   h2 svg { width: 14px; height: 14px; opacity: .7; }
+  .section + .section { margin-top: 2.5rem; }
 
   /* install codeblock */
   .install {
@@ -187,13 +240,35 @@
   .features {
     color: var(--muted);
     font-size: .9rem;
-    margin: 0 0 2.5rem;
+    margin: 0 0 1.5rem;
     list-style: none;
     padding: 0;
   }
   .features li { display: flex; align-items: flex-start; gap: .55rem; margin: .4rem 0; }
   .features li svg { width: 14px; height: 14px; margin-top: .25rem; color: var(--green); flex-shrink: 0; }
   .features code { font-size: .85em; background: var(--code-bg); padding: .05rem .3rem; border-radius: 3px; color: var(--code-fg); }
+
+  /* tabs (selective install) */
+  .tabs {
+    display: flex; gap: .25rem;
+    margin-bottom: .5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    background: none;
+    border: none;
+    padding: .5rem .8rem;
+    cursor: pointer;
+    color: var(--muted);
+    font: inherit;
+    font-size: .85rem;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+    margin-bottom: -1px;
+  }
+  .tab:hover { color: var(--fg); }
+  .tab.active { color: var(--accent); border-color: var(--accent); }
 
   /* link buttons */
   .links { display: flex; gap: .5rem; flex-wrap: wrap; }
@@ -244,8 +319,33 @@
       <rect x="4" y="11" width="16" height="10" rx="2"/>
       <path d="M8 11V7a4 4 0 1 1 8 0v4"/>
     </symbol>
+    <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="6" cy="12" r="2.5"/>
+      <circle cx="18" cy="6" r="2.5"/>
+      <circle cx="18" cy="18" r="2.5"/>
+      <path d="M8.2 11l7.6-4M8.2 13l7.6 4"/>
+    </symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13 2L4 14h6l-1 8 11-13h-7z"/>
+    </symbol>
+    <symbol id="i-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 12h4l2-7 4 14 2-7h6"/>
+    </symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l9 5-9 5-9-5 9-5z"/>
+      <path d="M3 13l9 5 9-5"/>
+      <path d="M3 18l9 5 9-5"/>
+    </symbol>
     <symbol id="i-terminal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M4 17l6-6-6-6M12 19h8"/>
+    </symbol>
+    <symbol id="i-zip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="4" width="16" height="16" rx="2"/>
+      <path d="M9 4v3M15 4v3M9 9v3M15 9v3M9 14v3M15 14v3M12 4v3M12 9v3M12 14v3"/>
+    </symbol>
+    <symbol id="i-bug" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="7" y="8" width="10" height="12" rx="5"/>
+      <path d="M12 8V5M9 5l-2-2M15 5l2-2M5 13H3M21 13h-2M5 18l-2 2M21 20l-2-2"/>
     </symbol>
     <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>
@@ -260,11 +360,12 @@
     <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M5 13l4 4L19 7"/>
     </symbol>
+    <symbol id="i-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 8L12 3 3 8v8l9 5 9-5z"/>
+      <path d="M3 8l9 5 9-5M12 13v8"/>
+    </symbol>
     <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor">
       <path d="M12 .5C5.6.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.4-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2 1-.3 2-.4 3-.4s2 .1 3 .4c2.3-1.6 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.4.5 12 .5z"/>
-    </symbol>
-    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M13 2L3 14h7l-1 8 10-12h-7z"/>
     </symbol>
   </defs>
 </svg>
@@ -278,63 +379,138 @@
       </svg>
     </div>
     <h1>ssh-wrappers</h1>
+    <span class="badge">9 wrappers</span>
   </div>
 
-  <p class="tag">Two tiny POSIX shell wrappers around <code>ssh</code> that fix the most common day-to-day annoyances with key vs. password auth.</p>
+  <p class="tag">Small POSIX shell wrappers around <code>ssh</code> that fix the most common day-to-day annoyances. Each is a one-line tweak of <code>ssh</code> options, packaged behind a name short enough to actually use.</p>
+
+  <div class="cats">
+    <span><span class="dot"></span>Auth</span>
+    <span><span class="dot"></span>Trust</span>
+    <span><span class="dot"></span>Connection lifetime</span>
+    <span><span class="dot"></span>I/O</span>
+    <span><span class="dot"></span>Debug</span>
+  </div>
 
   <div class="grid">
     <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshp.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-lock"/></svg></div>
         <div class="card-name">sshp</div>
+        <div class="card-pill">auth</div>
       </div>
-      <p>Force <strong>p</strong>assword auth — disable pubkey for one connection. Stops the agent from burning all your <code>MaxAuthTries</code> on keys before the server can ask for a password.</p>
+      <p>Force <strong>p</strong>assword auth — disable pubkey for one connection. Stops the agent from burning your <code>MaxAuthTries</code> on keys before the password prompt.</p>
     </a>
     <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshi.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-key"/></svg></div>
         <div class="card-name">sshi</div>
+        <div class="card-pill">auth</div>
       </div>
       <p>Use only explicitly configured <strong>i</strong>dentities (<code>IdentitiesOnly=yes</code>). Pin one key per host instead of letting the agent shotgun every loaded key.</p>
     </a>
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/ssha.md">
+      <div class="card-head">
+        <div class="card-icon"><svg><use href="#i-share"/></svg></div>
+        <div class="card-name">ssha</div>
+        <div class="card-pill">auth</div>
+      </div>
+      <p>Forward your local ssh-<strong>a</strong>gent (<code>-A</code>) so <code>git</code> on the bastion can use your local keys. Trusted hosts only — read the security note.</p>
+    </a>
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshq.md">
+      <div class="card-head">
+        <div class="card-icon"><svg><use href="#i-bolt"/></svg></div>
+        <div class="card-name">sshq</div>
+        <div class="card-pill">trust</div>
+      </div>
+      <p><strong>Q</strong>uiet/quick: skip host key prompts and don't pollute <code>known_hosts</code>. For ephemeral cloud VMs and lab gear — <em>not</em> production.</p>
+    </a>
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshk.md">
+      <div class="card-head">
+        <div class="card-icon"><svg><use href="#i-pulse"/></svg></div>
+        <div class="card-name">sshk</div>
+        <div class="card-pill">connection</div>
+      </div>
+      <p><strong>K</strong>eepalive: send a probe every 30s so idle sessions don't drop. No more <code>client_loop: send disconnect</code> after a coffee break.</p>
+    </a>
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshm.md">
+      <div class="card-head">
+        <div class="card-icon"><svg><use href="#i-layers"/></svg></div>
+        <div class="card-name">sshm</div>
+        <div class="card-pill">connection</div>
+      </div>
+      <p><strong>M</strong>ultiplex via <code>ControlMaster</code>: first connection opens a master, subsequent ones to the same host are essentially instant.</p>
+    </a>
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/ssht.md">
+      <div class="card-head">
+        <div class="card-icon"><svg><use href="#i-terminal"/></svg></div>
+        <div class="card-name">ssht</div>
+        <div class="card-pill">i/o</div>
+      </div>
+      <p>Force a pseudo-<strong>t</strong>erminal (<code>-t</code>). Needed for <code>sudo</code>, <code>htop</code>, <code>vim</code> when run as <code>ssh host &lt;cmd&gt;</code>.</p>
+    </a>
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshc.md">
+      <div class="card-head">
+        <div class="card-icon"><svg><use href="#i-package"/></svg></div>
+        <div class="card-name">sshc</div>
+        <div class="card-pill">i/o</div>
+      </div>
+      <p>Enable <strong>c</strong>ompression (<code>-C</code>). Wins on slow links and text-heavy streams (logs, builds). Skip on fast LANs and binary data.</p>
+    </a>
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshv.md">
+      <div class="card-head">
+        <div class="card-icon"><svg><use href="#i-bug"/></svg></div>
+        <div class="card-name">sshv</div>
+        <div class="card-pill">debug</div>
+      </div>
+      <p><strong>V</strong>erbose debug (<code>-vvv</code>). See exactly which keys are being offered, which auth methods the server accepts, and why they fail.</p>
+    </a>
   </div>
 
-  <h2><svg><use href="#i-download"/></svg>Install</h2>
-  <div class="install">
-    <pre id="install-cmd"><span class="prompt">$</span>curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh</pre>
-    <button type="button" class="copy" id="copy" aria-label="Copy install command">
-      <svg><use href="#i-copy"/></svg><span id="copy-label">Copy</span>
-    </button>
-  </div>
+  <section class="section">
+    <h2><svg><use href="#i-download"/></svg>Install</h2>
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab active" data-cmd="curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh">All</button>
+      <button type="button" class="tab" data-cmd="curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh -s -- sshp sshi ssha">Auth only</button>
+      <button type="button" class="tab" data-cmd="curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh -s -- sshk sshm">Connection only</button>
+      <button type="button" class="tab" data-cmd="curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh -s -- --uninstall">Uninstall</button>
+    </div>
+    <div class="install">
+      <pre id="install-cmd"><span class="prompt">$</span><span id="install-text">curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh</span></pre>
+      <button type="button" class="copy" id="copy" aria-label="Copy install command">
+        <svg><use href="#i-copy"/></svg><span id="copy-label">Copy</span>
+      </button>
+    </div>
 
-  <ul class="features">
-    <li><svg><use href="#i-check"/></svg>Auto-detects your shell (zsh, bash, ksh) and writes to the right rc file</li>
-    <li><svg><use href="#i-check"/></svg>Idempotent — safe to re-run; never silently shadows existing definitions</li>
-    <li><svg><use href="#i-check"/></svg><code>--force</code> to override, <code>--uninstall</code> to cleanly remove</li>
-    <li><svg><use href="#i-check"/></svg>POSIX shell only, no dependencies</li>
-  </ul>
+    <ul class="features">
+      <li><svg><use href="#i-check"/></svg>Auto-detects your shell (zsh, bash, ksh) and writes to the right rc file</li>
+      <li><svg><use href="#i-check"/></svg>Selective install: pass any subset of wrapper names; default installs all 9</li>
+      <li><svg><use href="#i-check"/></svg>Idempotent — refuses to silently shadow definitions you've already written</li>
+      <li><svg><use href="#i-check"/></svg><code>--force</code> to replace, <code>--uninstall</code> to cleanly remove, <code>--list</code> to see what's available</li>
+      <li><svg><use href="#i-check"/></svg>POSIX shell only, no runtime dependencies</li>
+    </ul>
+  </section>
 
-  <h2><svg><use href="#i-book"/></svg>Docs &amp; source</h2>
-  <div class="links">
-    <a href="https://github.com/pacnpal/ssh-wrappers#readme">
-      <svg><use href="#i-book"/></svg>README
-    </a>
-    <a href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshp.md">
-      <svg><use href="#i-lock"/></svg>sshp
-    </a>
-    <a href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshi.md">
-      <svg><use href="#i-key"/></svg>sshi
-    </a>
-    <a href="install.sh">
-      <svg><use href="#i-terminal"/></svg>install.sh
-    </a>
-    <a href="https://github.com/pacnpal/ssh-wrappers">
-      <svg><use href="#i-github"/></svg>GitHub
-    </a>
-  </div>
+  <section class="section">
+    <h2><svg><use href="#i-book"/></svg>Docs &amp; source</h2>
+    <div class="links">
+      <a href="https://github.com/pacnpal/ssh-wrappers#readme">
+        <svg><use href="#i-book"/></svg>README
+      </a>
+      <a href="install.sh">
+        <svg><use href="#i-terminal"/></svg>install.sh
+      </a>
+      <a href="https://github.com/pacnpal/ssh-wrappers">
+        <svg><use href="#i-github"/></svg>GitHub
+      </a>
+      <a href="https://github.com/pacnpal/ssh-wrappers/blob/master/LICENSE">
+        <svg><use href="#i-book"/></svg>MIT License
+      </a>
+    </div>
+  </section>
 
   <footer>
-    <span>MIT licensed · <a href="https://github.com/pacnpal/ssh-wrappers/blob/master/LICENSE">LICENSE</a></span>
+    <span>MIT licensed · v9-wrappers</span>
     <span><a href="https://github.com/pacnpal/ssh-wrappers"><svg width="14" height="14" style="vertical-align:-2px"><use href="#i-github"/></svg> pacnpal/ssh-wrappers</a></span>
   </footer>
 
@@ -344,11 +520,20 @@
 (function () {
   var btn = document.getElementById('copy');
   var label = document.getElementById('copy-label');
-  var cmd = document.getElementById('install-cmd');
-  if (!btn || !cmd) return;
+  var text = document.getElementById('install-text');
+  var tabs = document.querySelectorAll('.tab');
+  if (!btn || !text) return;
+
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (x) { x.classList.remove('active'); });
+      t.classList.add('active');
+      text.textContent = t.dataset.cmd;
+    });
+  });
+
   btn.addEventListener('click', function () {
-    // strip the visual prompt span
-    var text = cmd.textContent.replace(/^\s*\$\s*/, '');
+    var raw = text.textContent;
     var done = function () {
       label.textContent = 'Copied';
       btn.classList.add('copied');
@@ -358,14 +543,15 @@
       }, 1600);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(function () { fallback(text); done(); });
+      navigator.clipboard.writeText(raw).then(done).catch(function () { fallback(raw); done(); });
     } else {
-      fallback(text); done();
+      fallback(raw); done();
     }
   });
-  function fallback(text) {
+
+  function fallback(t) {
     var ta = document.createElement('textarea');
-    ta.value = text;
+    ta.value = t;
     ta.setAttribute('readonly', '');
     ta.style.position = 'absolute';
     ta.style.left = '-9999px';
