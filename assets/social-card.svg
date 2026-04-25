@@ -52,10 +52,15 @@
   <!-- title -->
   <text x="248" y="148" font-family="ui-monospace, SF Mono, Menlo, Consolas, monospace" font-size="84" font-weight="700" fill="url(#title)" letter-spacing="-2">ssh-wrappers</text>
 
-  <!-- "9 wrappers" badge -->
+  <!-- "10 wrappers" badge -->
   <g transform="translate(248, 168)">
-    <rect x="0" y="0" width="118" height="30" rx="15" fill="#312e81" stroke="#6366f1" stroke-width="1"/>
-    <text x="59" y="20" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="14" font-weight="600" fill="#a78bfa" text-anchor="middle">9 wrappers</text>
+    <rect x="0" y="0" width="128" height="30" rx="15" fill="#312e81" stroke="#6366f1" stroke-width="1"/>
+    <text x="64" y="20" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="14" font-weight="600" fill="#a78bfa" text-anchor="middle">10 wrappers</text>
+  </g>
+  <!-- "+ sshh" pill -->
+  <g transform="translate(388, 168)">
+    <rect x="0" y="0" width="142" height="30" rx="15" fill="transparent" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="71" y="20" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="13" font-weight="500" fill="#cbd5e1" text-anchor="middle">+ run sshh for help</text>
   </g>
 
   <!-- tagline -->

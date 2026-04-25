@@ -14,7 +14,7 @@
   <img alt="views" src="https://visitor-badge.laobi.icu/badge?page_id=pacnpal.ssh-wrappers">
 </p>
 
-Nine small POSIX shell wrappers around `ssh` that fix the most common day-to-day annoyances. Each is a one-line tweak of `ssh` options, packaged behind a name short enough that you'll actually use it.
+Ten small POSIX shell wrappers around `ssh` that fix the most common day-to-day annoyances. Each is a one-line tweak of `ssh` options, packaged behind a name short enough that you'll actually use it. Plus a built-in `sshh` to remind you which is which.
 
 Homepage: <https://pacnpal.github.io/ssh-wrappers/>
 
@@ -31,6 +31,7 @@ Homepage: <https://pacnpal.github.io/ssh-wrappers/>
 | [`ssht`](ssht.md) | Force a pseudo-**t**erminal (`-t`) — for `sudo`, `htop`, `vim` over ssh | **t**ty |
 | [`sshc`](sshc.md) | **C**ompression (`-C`) — wins on slow links and text-heavy streams | **c**ompression |
 | [`sshv`](sshv.md) | **V**erbose debug (`-vvv`) — see exactly what `ssh` is trying | **v**erbose |
+| [`sshh`](sshh.md) | **H**elp — list installed wrappers, what they do, how to use | **h**elp |
 
 ## Why?
 
@@ -47,6 +48,7 @@ These wrappers turn each fix into a one-character mnemonic:
 - Need agent forwarding for `git pull` on a bastion → `ssha`.
 - Streaming logs over a slow link → `sshc`.
 - Connection failing for an unknown reason → `sshv`.
+- Forgot which wrapper does what → `sshh`.
 
 ## Install
 
@@ -129,6 +131,8 @@ sshm work-bastion                               # then re-run; instant
 ssht user@host sudo systemctl restart nginx     # sudo over ssh
 sshc remote-builder 'tail -f build.log'         # compression
 sshv user@host                                  # debug auth failure
+sshh                                            # show all wrappers + install status
+sshh sshm                                       # detail for one wrapper
 ```
 
 Read the per-wrapper docs for what each option actually does, security tradeoffs, and `~/.ssh/config` equivalents:
@@ -138,6 +142,7 @@ Read the per-wrapper docs for what each option actually does, security tradeoffs
 - [sshk](sshk.md) · [sshm](sshm.md) — connection lifetime
 - [ssht](ssht.md) · [sshc](sshc.md) — I/O
 - [sshv](sshv.md) — debugging
+- [sshh](sshh.md) — help / introspection
 
 ## Requirements
 
@@ -182,7 +187,7 @@ Project layout:
 ├── install.sh                # the installer (source of truth for function bodies)
 ├── README.md                 # this file
 ├── index.html                # GitHub Pages landing page
-├── ssh{p,i,a,q,k,m,t,c,v}.md # per-wrapper docs
+├── ssh{p,i,a,q,k,m,t,c,v,h}.md # per-wrapper docs
 ├── assets/
 │   ├── logo.svg              # the mark
 │   ├── logo.png              # rendered 512x512

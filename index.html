@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ssh-wrappers · nine small ssh helpers</title>
-<meta name="description" content="Nine small POSIX shell wrappers around ssh that fix the most common day-to-day annoyances. One-liner install via curl, with selective install for any subset.">
+<title>ssh-wrappers · ten small ssh helpers</title>
+<meta name="description" content="Ten small POSIX shell wrappers around ssh that fix the most common day-to-day annoyances, plus a built-in `sshh` to list what's installed. One-liner install via curl, with selective install for any subset.">
 <meta name="theme-color" content="#0a0e1a" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#fafbff" media="(prefers-color-scheme: light)">
 <link rel="canonical" href="https://pacnpal.github.io/ssh-wrappers/">
@@ -15,16 +15,16 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://pacnpal.github.io/ssh-wrappers/">
 <meta property="og:title" content="ssh-wrappers">
-<meta property="og:description" content="Nine small POSIX shell wrappers around ssh that fix the most common day-to-day annoyances. One-liner install via curl.">
+<meta property="og:description" content="Ten small POSIX shell wrappers around ssh that fix the most common day-to-day annoyances. One-liner install via curl.">
 <meta property="og:image" content="https://pacnpal.github.io/ssh-wrappers/assets/social-card.png">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="640">
-<meta property="og:image:alt" content="ssh-wrappers — nine small ssh helpers">
+<meta property="og:image:alt" content="ssh-wrappers — ten small ssh helpers">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ssh-wrappers">
-<meta name="twitter:description" content="Nine small POSIX shell wrappers around ssh: sshp, sshi, ssha, sshq, sshk, sshm, ssht, sshc, sshv.">
+<meta name="twitter:description" content="Ten small POSIX shell wrappers around ssh: sshp, sshi, ssha, sshq, sshk, sshm, ssht, sshc, sshv, sshh.">
 <meta name="twitter:image" content="https://pacnpal.github.io/ssh-wrappers/assets/social-card.png">
 
 <style>
@@ -364,6 +364,11 @@
       <path d="M21 8L12 3 3 8v8l9 5 9-5z"/>
       <path d="M3 8l9 5 9-5M12 13v8"/>
     </symbol>
+    <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-1 .5-1 1.2-1 2.2"/>
+      <circle cx="12" cy="17" r=".6" fill="currentColor"/>
+    </symbol>
     <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor">
       <path d="M12 .5C5.6.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.4-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2 1-.3 2-.4 3-.4s2 .1 3 .4c2.3-1.6 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.4.5 12 .5z"/>
     </symbol>
@@ -379,10 +384,10 @@
       </svg>
     </div>
     <h1>ssh-wrappers</h1>
-    <span class="badge">9 wrappers</span>
+    <span class="badge">10 wrappers</span>
   </div>
 
-  <p class="tag">Small POSIX shell wrappers around <code>ssh</code> that fix the most common day-to-day annoyances. Each is a one-line tweak of <code>ssh</code> options, packaged behind a name short enough to actually use.</p>
+  <p class="tag">Small POSIX shell wrappers around <code>ssh</code> that fix the most common day-to-day annoyances. Each is a one-line tweak of <code>ssh</code> options, packaged behind a name short enough to actually use — plus a built-in <code>sshh</code> to remind you which is which.</p>
 
   <div class="cats">
     <span><span class="dot"></span>Auth</span>
@@ -390,6 +395,7 @@
     <span><span class="dot"></span>Connection lifetime</span>
     <span><span class="dot"></span>I/O</span>
     <span><span class="dot"></span>Debug</span>
+    <span><span class="dot"></span>Help</span>
   </div>
 
   <div class="grid">
@@ -465,6 +471,14 @@
       </div>
       <p><strong>V</strong>erbose debug (<code>-vvv</code>). See exactly which keys are being offered, which auth methods the server accepts, and why they fail.</p>
     </a>
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshh.md">
+      <div class="card-head">
+        <div class="card-icon"><svg><use href="#i-help"/></svg></div>
+        <div class="card-name">sshh</div>
+        <div class="card-pill">help</div>
+      </div>
+      <p><strong>H</strong>elp / introspection. Shows which wrappers are installed, what each does, and an example. <code>sshh &lt;name&gt;</code> for detail.</p>
+    </a>
   </div>
 
   <section class="section">
@@ -510,7 +524,7 @@
   </section>
 
   <footer>
-    <span>MIT licensed · v9-wrappers</span>
+    <span>MIT licensed · 10 wrappers · run <code>sshh</code> after install</span>
     <span><a href="https://github.com/pacnpal/ssh-wrappers"><svg width="14" height="14" style="vertical-align:-2px"><use href="#i-github"/></svg> pacnpal/ssh-wrappers</a></span>
   </footer>
 
