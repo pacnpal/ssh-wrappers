@@ -1,5 +1,7 @@
 # ssh-wrappers
 
+![views](https://visitor-badge.laobi.icu/badge?page_id=pacnpal.ssh-wrappers)
+
 Two small shell functions that wrap `ssh` with safer / more predictable authentication behavior.
 
 | Wrapper | Purpose |
@@ -19,13 +21,26 @@ The installer:
 
 - auto-detects your shell from `$SHELL` (zsh, bash, ksh)
 - writes the functions to the matching rc file (`~/.zshrc`, `~/.bash_profile` on macOS bash, `~/.bashrc` elsewhere, `~/.kshrc`, …)
-- is idempotent — re-running does nothing if already installed
-- warns if `sshp`/`sshi` already exist as an alias, function, or executable
+- is idempotent — re-running does nothing if the managed block is already there
+- **refuses** to silently shadow `sshp`/`sshi` if you've already defined them (use `--force` to install anyway)
+- supports `--uninstall` to cleanly remove the managed block
 
-Override the target file if you want:
+Override the target file:
 
 ```sh
 SSH_WRAPPERS_RC=~/.zprofile sh install.sh
+```
+
+Force install over existing definitions (later definitions win in zsh/bash):
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/pacnpal/ssh-wrappers/master/install.sh | sh -s -- --force
+```
+
+Uninstall (removes only the managed block, leaves the rest of your rc file alone):
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/pacnpal/ssh-wrappers/master/install.sh | sh -s -- --uninstall
 ```
 
 Fish isn't covered by the installer (different function syntax) — it'll print snippets you can paste into `~/.config/fish/config.fish`.
