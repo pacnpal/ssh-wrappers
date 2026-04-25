@@ -14,7 +14,7 @@ Two small shell functions that wrap `ssh` with safer / more predictable authenti
 ### One-liner
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/pacnpal/ssh-wrappers/master/install.sh | sh
+curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh
 ```
 
 The installer:
@@ -34,13 +34,13 @@ SSH_WRAPPERS_RC=~/.zprofile sh install.sh
 Force install over existing definitions (later definitions win in zsh/bash):
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/pacnpal/ssh-wrappers/master/install.sh | sh -s -- --force
+curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh -s -- --force
 ```
 
 Uninstall (removes only the managed block, leaves the rest of your rc file alone):
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/pacnpal/ssh-wrappers/master/install.sh | sh -s -- --uninstall
+curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh -s -- --uninstall
 ```
 
 Fish isn't covered by the installer (different function syntax) — it'll print snippets you can paste into `~/.config/fish/config.fish`.
