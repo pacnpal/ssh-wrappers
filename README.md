@@ -1,12 +1,18 @@
-# ssh-wrappers
+<p align="center">
+  <img src="assets/social-card.svg" alt="ssh-wrappers — two tiny POSIX shell wrappers around ssh" width="720">
+</p>
 
-[![shellcheck](https://github.com/pacnpal/ssh-wrappers/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/pacnpal/ssh-wrappers/actions/workflows/shellcheck.yml)
-[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![shell: POSIX](https://img.shields.io/badge/shell-POSIX-success)
-![platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Linux-lightgrey)
-[![GitHub stars](https://img.shields.io/github/stars/pacnpal/ssh-wrappers?style=flat&logo=github)](https://github.com/pacnpal/ssh-wrappers/stargazers)
-[![GitHub last commit](https://img.shields.io/github/last-commit/pacnpal/ssh-wrappers/master)](https://github.com/pacnpal/ssh-wrappers/commits/master)
-![views](https://visitor-badge.laobi.icu/badge?page_id=pacnpal.ssh-wrappers)
+<h1 align="center">ssh-wrappers</h1>
+
+<p align="center">
+  <a href="https://github.com/pacnpal/ssh-wrappers/actions/workflows/shellcheck.yml"><img alt="shellcheck" src="https://github.com/pacnpal/ssh-wrappers/actions/workflows/shellcheck.yml/badge.svg"></a>
+  <a href="LICENSE"><img alt="license: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+  <img alt="shell: POSIX" src="https://img.shields.io/badge/shell-POSIX-success">
+  <img alt="platforms" src="https://img.shields.io/badge/platforms-macOS%20%7C%20Linux-lightgrey">
+  <a href="https://github.com/pacnpal/ssh-wrappers/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/pacnpal/ssh-wrappers?style=flat&logo=github"></a>
+  <a href="https://github.com/pacnpal/ssh-wrappers/commits/master"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/pacnpal/ssh-wrappers/master"></a>
+  <img alt="views" src="https://visitor-badge.laobi.icu/badge?page_id=pacnpal.ssh-wrappers">
+</p>
 
 Two small POSIX shell wrappers around `ssh` that fix the two most common day-to-day annoyances:
 
