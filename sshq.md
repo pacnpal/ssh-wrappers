@@ -64,3 +64,5 @@ sshq runner@ci-host 'tail -f /var/log/build.log'
   That's safer because it scopes the relaxation to known-ephemeral hosts, instead of you having to remember which `ssh` invocation gets the relaxed treatment.
 
 - `StrictHostKeyChecking=accept-new` (modern OpenSSH) is a middle ground: accept a key on first sight without prompting, but still detect changes afterward. If you only want to skip the first-connect prompt, that's a better default than `sshq`.
+
+- **Forgot the other wrappers?** Run [`sshh`](sshh.md) for a one-screen summary of what's installed and what each one does.

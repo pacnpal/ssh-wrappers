@@ -55,3 +55,5 @@ sshk prod-bastion 'tail -f /var/log/syslog'
 - If the *server* is doing the dropping, `sshk` doesn't help — you'd need `ClientAliveInterval` in the server's `sshd_config`, which only the admin can set.
 
 - Distinct from [`sshm`](sshm.md): `sshk` keeps one connection alive longer; `sshm` makes new connections to the same host instant. Both are about session lifetime, but they solve different parts of the problem.
+
+- **Forgot the other wrappers?** Run [`sshh`](sshh.md) for a one-screen summary of what's installed and what each one does.

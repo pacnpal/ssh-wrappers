@@ -70,3 +70,5 @@ That's almost always what people end up doing — `sshm` is most useful when you
 - **`%C` is also useful.** `%C` is a hash of `%l%h%p%r` — guaranteed-short and fits in path-length-limited environments (sockets have a ~104-char limit on macOS). If you hit "too long for Unix domain socket", switch to `~/.ssh/cm-%C`.
 
 - Distinct from [`sshk`](sshk.md): `sshk` keeps one long-lived connection from dropping; `sshm` makes opening new connections fast. Both can be used together.
+
+- **Forgot the other wrappers?** Run [`sshh`](sshh.md) for a one-screen summary of what's installed and what each one does.

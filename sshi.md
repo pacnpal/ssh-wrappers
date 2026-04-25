@@ -85,3 +85,5 @@ git clone git@github-work:org/repo.git
 - **For "always behave this way for this host"**, set `IdentitiesOnly yes` in `~/.ssh/config` for that host (or for `Host *` if it's your global preference). Many people consider `IdentitiesOnly yes` the saner default and only opt out for hosts that benefit from agent shotgun behavior.
 
 - **Inspecting agent contents:** `ssh-add -l` shows what's loaded. If the agent has more than ~5 keys, you almost certainly want `IdentitiesOnly` on by default.
+
+- **Forgot the other wrappers?** Run [`sshh`](sshh.md) for a one-screen summary of what's installed and what each one does.

@@ -54,7 +54,7 @@ Status, an example invocation, and a link straight to the full doc.
 
 ## When to use it
 
-- **You forgot which letter goes with which wrapper.** `sshh` is faster than `man ssh` plus reading nine `.md` files.
+- **You forgot which letter goes with which wrapper.** `sshh` is faster than `man ssh` plus reading the per-wrapper docs.
 - **You're not sure if a wrapper is installed in your current shell** (e.g. `bash` doesn't auto-source `~/.zshrc`).
 - **You want a colleague to know what's available** without sending them a link.
 - **You did a selective install and forgot which subset you picked.**

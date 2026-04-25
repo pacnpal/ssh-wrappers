@@ -52,3 +52,5 @@ ssh -tt user@host 'sudo apt-get update' < /dev/null > update.log
 - For interactive ssh (no remote command argument), a TTY is allocated automatically — you don't need `ssht`. It only matters when you pass a command.
 
 - A multiplexed master ([`sshm`](sshm.md)) is opened with whatever TTY decision the first invocation made. If you plan to run `sudo` over the master, open it with `ssht` first.
+
+- **Forgot the other wrappers?** Run [`sshh`](sshh.md) for a one-screen summary of what's installed and what each one does.

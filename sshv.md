@@ -58,3 +58,5 @@ Most everything else is noise on a healthy connection. When debugging, scan for 
 - `sshv` writes debug output to stderr, so piping `2>&1 | less` (or `| grep`) keeps the regular output usable.
 - If you only want one level: `ssh -v "$@"` is plenty for most "why isn't this connecting" cases. `sshv` is the "give me everything" hammer.
 - Pair with [`sshi`](sshi.md) to control *which* keys are offered, then `sshv` to confirm only those are tried.
+
+- **Forgot the other wrappers?** Run [`sshh`](sshh.md) for a one-screen summary of what's installed and what each one does.

@@ -64,3 +64,5 @@ ssha -o IdentitiesOnly=yes -i ~/.ssh/work_ed25519 user@bastion
 - **Forwarding never persists.** When the ssh session ends, the forwarded socket goes away. There's no leftover state.
 
 - Sometimes you want `-A` on, sometimes off — `ssha` is the explicit "yes, on for this connection" form. Don't put `ForwardAgent yes` in `~/.ssh/config` for `Host *`; scope it to specific known-trusted hosts.
+
+- **Forgot the other wrappers?** Run [`sshh`](sshh.md) for a one-screen summary of what's installed and what each one does.

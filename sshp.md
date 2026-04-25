@@ -51,3 +51,5 @@ All normal `ssh` flags pass through.
   No wrapper for that one — most users want it as a per-host config rather than a one-off command.
 
 - **Auditing.** `sshp` shows up in the server's auth log as a normal password attempt, no different from typing the password into plain `ssh`. There's no client-side fingerprint identifying the wrapper.
+
+- **Forgot the other wrappers?** Run [`sshh`](sshh.md) for a one-screen summary of what's installed and what each one does.

@@ -50,3 +50,5 @@ For large file transfers specifically, `rsync -avz user@host:src dst` will usual
 - Modern OpenSSH only supports zlib (and `zlib@openssh.com`) for compression. There's no choice of algorithm — it's on or off.
 
 - If you're not sure whether compression helps for a given link, `time` it both ways with a representative payload. The answer is workload-specific.
+
+- **Forgot the other wrappers?** Run [`sshh`](sshh.md) for a one-screen summary of what's installed and what each one does.
