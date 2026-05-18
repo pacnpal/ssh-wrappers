@@ -1,5 +1,5 @@
 <p align="left">
-  <a href="README.md"><img src="assets/logo.svg" width="48" alt="ssh-wrappers" align="left" style="margin-right:14px"></a>
+  <a href="../README.md"><img src="../assets/logo.svg" width="48" alt="ssh-wrappers" align="left" style="margin-right:14px"></a>
 </p>
 
 # `sshh` — list installed wrappers, what they do, how to use them
@@ -40,7 +40,7 @@ Detail:        sshh <name>          e.g. sshh sshp
 Uninstall:     curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh -s -- --uninstall
 ```
 
-A `✓` (green) means the wrapper is defined in the current shell. A `·` (dim) means it isn't — typically because you did a [selective install](README.md#selective-install) and skipped that one. The footer shows the install / uninstall commands so you can fix it without leaving your terminal.
+A `✓` (green) means the wrapper is defined in the current shell. A `·` (dim) means it isn't — typically because you did a [selective install](../README.md#selective-install) and skipped that one. The footer shows the install / uninstall commands so you can fix it without leaving your terminal.
 
 ### Detail (`sshh sshp`)
 

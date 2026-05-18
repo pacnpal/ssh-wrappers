@@ -24,17 +24,17 @@ Homepage: <https://pacnpal.github.io/ssh-wrappers/>
 
 | Wrapper | Purpose | Mnemonic |
 |---------|---------|----------|
-| [`sshp`](sshp.md) | Force **p**assword authentication (disable pubkey for one connection) | **p**assword |
-| [`sshi`](sshi.md) | Use only explicitly configured **i**dentities (`IdentitiesOnly=yes`) | **i**dentities |
-| [`ssha`](ssha.md) | Forward your local ssh-**a**gent to the remote host (`-A`) | **a**gent |
-| [`sshcp`](sshcp.md) | **C**o**p**y a key with `ssh-copy-id` without pubkey auth (skip the `MaxAuthTries` burn) | **c**o**p**y |
-| [`sshq`](sshq.md) | **Q**uiet/quick: skip host key prompts, don't pollute `known_hosts` | **q**uick |
-| [`sshk`](sshk.md) | **K**eepalive: don't drop on idle (`ServerAlive*`) | **k**eepalive |
-| [`sshm`](sshm.md) | **M**ultiplex: instant subsequent connections (`ControlMaster`) | **m**ultiplex |
-| [`ssht`](ssht.md) | Force a pseudo-**t**erminal (`-t`) — for `sudo`, `htop`, `vim` over ssh | **t**ty |
-| [`sshc`](sshc.md) | **C**ompression (`-C`) — wins on slow links and text-heavy streams | **c**ompression |
-| [`sshv`](sshv.md) | **V**erbose debug (`-vvv`) — see exactly what `ssh` is trying | **v**erbose |
-| [`sshh`](sshh.md) | **H**elp — list installed wrappers, what they do, how to use | **h**elp |
+| [`sshp`](docs/sshp.md) | Force **p**assword authentication (disable pubkey for one connection) | **p**assword |
+| [`sshi`](docs/sshi.md) | Use only explicitly configured **i**dentities (`IdentitiesOnly=yes`) | **i**dentities |
+| [`ssha`](docs/ssha.md) | Forward your local ssh-**a**gent to the remote host (`-A`) | **a**gent |
+| [`sshcp`](docs/sshcp.md) | **C**o**p**y a key with `ssh-copy-id` without pubkey auth (skip the `MaxAuthTries` burn) | **c**o**p**y |
+| [`sshq`](docs/sshq.md) | **Q**uiet/quick: skip host key prompts, don't pollute `known_hosts` | **q**uick |
+| [`sshk`](docs/sshk.md) | **K**eepalive: don't drop on idle (`ServerAlive*`) | **k**eepalive |
+| [`sshm`](docs/sshm.md) | **M**ultiplex: instant subsequent connections (`ControlMaster`) | **m**ultiplex |
+| [`ssht`](docs/ssht.md) | Force a pseudo-**t**erminal (`-t`) — for `sudo`, `htop`, `vim` over ssh | **t**ty |
+| [`sshc`](docs/sshc.md) | **C**ompression (`-C`) — wins on slow links and text-heavy streams | **c**ompression |
+| [`sshv`](docs/sshv.md) | **V**erbose debug (`-vvv`) — see exactly what `ssh` is trying | **v**erbose |
+| [`sshh`](docs/sshh.md) | **H**elp — list installed wrappers, what they do, how to use | **h**elp |
 
 ## Why?
 
@@ -142,12 +142,12 @@ sshh sshm                                       # detail for one wrapper
 
 Read the per-wrapper docs for what each option actually does, security tradeoffs, and `~/.ssh/config` equivalents:
 
-- [sshp](sshp.md) · [sshi](sshi.md) · [ssha](ssha.md) · [sshcp](sshcp.md) — auth
-- [sshq](sshq.md) — trust
-- [sshk](sshk.md) · [sshm](sshm.md) — connection lifetime
-- [ssht](ssht.md) · [sshc](sshc.md) — I/O
-- [sshv](sshv.md) — debugging
-- [sshh](sshh.md) — help / introspection
+- [sshp](docs/sshp.md) · [sshi](docs/sshi.md) · [ssha](docs/ssha.md) · [sshcp](docs/sshcp.md) — auth
+- [sshq](docs/sshq.md) — trust
+- [sshk](docs/sshk.md) · [sshm](docs/sshm.md) — connection lifetime
+- [ssht](docs/ssht.md) · [sshc](docs/sshc.md) — I/O
+- [sshv](docs/sshv.md) — debugging
+- [sshh](docs/sshh.md) — help / introspection
 
 ## Requirements
 
@@ -159,15 +159,15 @@ No build step, no runtime dependencies beyond what comes with your OS.
 
 ## Troubleshooting
 
-**`Too many authentication failures`** — your agent has more keys than the server's `MaxAuthTries` (default 6). Use [`sshi`](sshi.md) to offer only one specific key, or [`sshp`](sshp.md) to skip pubkey entirely.
+**`Too many authentication failures`** — your agent has more keys than the server's `MaxAuthTries` (default 6). Use [`sshi`](docs/sshi.md) to offer only one specific key, or [`sshp`](docs/sshp.md) to skip pubkey entirely.
 
 **`Permission denied (publickey)` with `sshp`** — the server has `PasswordAuthentication no`. No client-side wrapper can fix this; the server must allow password auth.
 
-**`ssh-copy-id` exits with `Too many authentication failures` before asking for a password** — your agent's loaded keys are exhausting `MaxAuthTries` before the password prompt. Use [`sshcp`](sshcp.md) instead of plain `ssh-copy-id`.
+**`ssh-copy-id` exits with `Too many authentication failures` before asking for a password** — your agent's loaded keys are exhausting `MaxAuthTries` before the password prompt. Use [`sshcp`](docs/sshcp.md) instead of plain `ssh-copy-id`.
 
-**`sudo: a terminal is required` over ssh** — pass the command through [`ssht`](ssht.md) instead of plain `ssh`.
+**`sudo: a terminal is required` over ssh** — pass the command through [`ssht`](docs/ssht.md) instead of plain `ssh`.
 
-**`client_loop: send disconnect: Broken pipe` after idle** — use [`sshk`](sshk.md), or set `ServerAliveInterval 30` for `Host *` in `~/.ssh/config`.
+**`client_loop: send disconnect: Broken pipe` after idle** — use [`sshk`](docs/sshk.md), or set `ServerAliveInterval 30` for `Host *` in `~/.ssh/config`.
 
 **`sshp`/`sshi`/etc. "command not found" after install** — open a fresh shell, or `source ~/.zshrc`. Shell functions only exist in interactive shells that have sourced your rc file. Check `type sshp` in the new shell.
 
@@ -182,19 +182,35 @@ No build step, no runtime dependencies beyond what comes with your OS.
 Lint the installer locally:
 
 ```sh
-shellcheck --shell=sh install.sh
+shellcheck --shell=sh install.sh scripts/sync-wrappers.sh
 ```
 
 CI runs the same on every push to `master` — see the badge above.
+
+After editing `install.sh`'s `emit_fn()` block (function bodies live there), regenerate the standalone copies in `wrappers/`:
+
+```sh
+sh scripts/sync-wrappers.sh
+```
+
+See [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) for the full checklist when adding a new wrapper — every file/count/metadata block that needs to stay in sync.
 
 Project layout:
 
 ```
 .
-├── install.sh                # the installer (source of truth for function bodies)
 ├── README.md                 # this file
+├── LICENSE
+├── install.sh                # the installer (source of truth for function bodies)
 ├── index.html                # GitHub Pages landing page
-├── ssh{p,i,a,cp,q,k,m,t,c,v,h}.md # per-wrapper docs
+├── wrappers/                 # standalone copies of each wrapper, one .sh per
+│   ├── README.md             # what this dir is and how it's regenerated
+│   └── ssh{p,i,a,cp,q,k,m,t,c,v,h}.sh
+├── docs/                     # per-wrapper docs + CONTRIBUTING
+│   ├── CONTRIBUTING.md       # how to add a wrapper
+│   └── ssh{p,i,a,cp,q,k,m,t,c,v,h}.md
+├── scripts/
+│   └── sync-wrappers.sh      # regenerate wrappers/ from install.sh
 ├── assets/
 │   ├── logo.svg              # the mark
 │   ├── logo.png              # rendered 512x512
@@ -203,6 +219,10 @@ Project layout:
 └── .github/workflows/
     └── shellcheck.yml        # CI
 ```
+
+## Contributing
+
+See [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) for what to touch when adding a new wrapper. The short version: edit `install.sh`'s `emit_fn()` plus `_sshh_data`, add `docs/sshX.md`, update the count in `README.md` / `docs/sshh.md` / `index.html` / `assets/social-card.svg`, re-render the social card PNG, and run `sh scripts/sync-wrappers.sh`.
 
 ## License
 

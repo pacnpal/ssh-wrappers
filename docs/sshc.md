@@ -1,5 +1,5 @@
 <p align="left">
-  <a href="README.md"><img src="assets/logo.svg" width="48" alt="ssh-wrappers" align="left" style="margin-right:14px"></a>
+  <a href="../README.md"><img src="../assets/logo.svg" width="48" alt="ssh-wrappers" align="left" style="margin-right:14px"></a>
 </p>
 
 # `sshc` — compression

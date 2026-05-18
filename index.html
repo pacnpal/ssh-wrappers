@@ -399,7 +399,7 @@
   </div>
 
   <div class="grid">
-    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshp.md">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/docs/sshp.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-lock"/></svg></div>
         <div class="card-name">sshp</div>
@@ -407,7 +407,7 @@
       </div>
       <p>Force <strong>p</strong>assword auth — disable pubkey for one connection. Stops the agent from burning your <code>MaxAuthTries</code> on keys before the password prompt.</p>
     </a>
-    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshi.md">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/docs/sshi.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-key"/></svg></div>
         <div class="card-name">sshi</div>
@@ -415,7 +415,7 @@
       </div>
       <p>Use only explicitly configured <strong>i</strong>dentities (<code>IdentitiesOnly=yes</code>). Pin one key per host instead of letting the agent shotgun every loaded key.</p>
     </a>
-    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/ssha.md">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/docs/ssha.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-share"/></svg></div>
         <div class="card-name">ssha</div>
@@ -423,7 +423,7 @@
       </div>
       <p>Forward your local ssh-<strong>a</strong>gent (<code>-A</code>) so <code>git</code> on the bastion can use your local keys. Trusted hosts only — read the security note.</p>
     </a>
-    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshcp.md">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/docs/sshcp.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-download"/></svg></div>
         <div class="card-name">sshcp</div>
@@ -431,7 +431,7 @@
       </div>
       <p><strong>C</strong>o<strong>p</strong>y a key with <code>ssh-copy-id</code> while disabling pubkey auth — so the agent's loaded keys don't exhaust <code>MaxAuthTries</code> before the password prompt.</p>
     </a>
-    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshq.md">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/docs/sshq.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-bolt"/></svg></div>
         <div class="card-name">sshq</div>
@@ -439,7 +439,7 @@
       </div>
       <p><strong>Q</strong>uiet/quick: skip host key prompts and don't pollute <code>known_hosts</code>. For ephemeral cloud VMs and lab gear — <em>not</em> production.</p>
     </a>
-    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshk.md">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/docs/sshk.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-pulse"/></svg></div>
         <div class="card-name">sshk</div>
@@ -447,7 +447,7 @@
       </div>
       <p><strong>K</strong>eepalive: send a probe every 30s so idle sessions don't drop. No more <code>client_loop: send disconnect</code> after a coffee break.</p>
     </a>
-    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshm.md">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/docs/sshm.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-layers"/></svg></div>
         <div class="card-name">sshm</div>
@@ -455,7 +455,7 @@
       </div>
       <p><strong>M</strong>ultiplex via <code>ControlMaster</code>: first connection opens a master, subsequent ones to the same host are essentially instant.</p>
     </a>
-    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/ssht.md">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/docs/ssht.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-terminal"/></svg></div>
         <div class="card-name">ssht</div>
@@ -463,7 +463,7 @@
       </div>
       <p>Force a pseudo-<strong>t</strong>erminal (<code>-t</code>). Needed for <code>sudo</code>, <code>htop</code>, <code>vim</code> when run as <code>ssh host &lt;cmd&gt;</code>.</p>
     </a>
-    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshc.md">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/docs/sshc.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-package"/></svg></div>
         <div class="card-name">sshc</div>
@@ -471,7 +471,7 @@
       </div>
       <p>Enable <strong>c</strong>ompression (<code>-C</code>). Wins on slow links and text-heavy streams (logs, builds). Skip on fast LANs and binary data.</p>
     </a>
-    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshv.md">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/docs/sshv.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-bug"/></svg></div>
         <div class="card-name">sshv</div>
@@ -479,7 +479,7 @@
       </div>
       <p><strong>V</strong>erbose debug (<code>-vvv</code>). See exactly which keys are being offered, which auth methods the server accepts, and why they fail.</p>
     </a>
-    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/sshh.md">
+    <a class="card" href="https://github.com/pacnpal/ssh-wrappers/blob/master/docs/sshh.md">
       <div class="card-head">
         <div class="card-icon"><svg><use href="#i-help"/></svg></div>
         <div class="card-name">sshh</div>

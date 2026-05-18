@@ -166,7 +166,7 @@ sshh|meta|this help (run `sshh <name>` for detail)|sshh sshp'
                 "$_sshh_m" "$_cat" "$_sshh_r" "$_desc"
             printf '  status:   %s\n' "$_status"
             printf '  example:  %s%s%s\n' "$_sshh_m" "$_ex" "$_sshh_r"
-            printf '  docs:     https://pacnpal.github.io/ssh-wrappers/%s.md\n\n' "$_name"
+            printf '  docs:     https://pacnpal.github.io/ssh-wrappers/docs/%s.md\n\n' "$_name"
         done
         unset _q _line _name _cat _desc _ex _status
         unset _sshh_data _sshh_b _sshh_a _sshh_g _sshh_m _sshh_r

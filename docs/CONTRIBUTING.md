@@ -1,5 +1,5 @@
 <p align="left">
-  <a href="README.md"><img src="assets/logo.svg" width="48" alt="ssh-wrappers" align="left" style="margin-right:14px"></a>
+  <a href="../README.md"><img src="../assets/logo.svg" width="48" alt="ssh-wrappers" align="left" style="margin-right:14px"></a>
 </p>
 
 # Adding a new wrapper
@@ -92,13 +92,13 @@ This is the source of truth. The four edits live in different parts of one file 
    function sshcp ; ssh-copy-id -o PubkeyAuthentication=no $argv ; end
    ```
 
-### 2. New `sshX.md` doc
+### 2. New `docs/sshX.md`
 
-Create one new file at the project root. Use [`sshp.md`](sshp.md) as the structural template:
+Create one new file under `docs/`. Use [`sshp.md`](sshp.md) as the structural template (header path is `<a href="../README.md"><img src="../assets/logo.svg">`):
 
 ```
-sshX.md
-├── logo header block (copy verbatim from any existing wrapper doc)
+docs/sshX.md
+├── logo header block (copy verbatim from any existing wrapper doc — paths are ../)
 ├── # `sshX` — short title (≤8 words)
 ├── function code block (the same body emitted in install.sh)
 ├── ## What it does          ← one paragraph; what option(s) it sets, what they do
@@ -109,24 +109,36 @@ sshX.md
                                 other wrappers? Run sshh" footer pointer
 ```
 
-Keep the file self-contained. The user lands here from `sshh sshX` and shouldn't need to read the README to understand the wrapper.
+Keep the file self-contained. The user lands here from `sshh sshX` and shouldn't need to read the README to understand the wrapper. Cross-links between wrapper docs are sibling-relative (`[sshp](sshp.md)`, not `[sshp](docs/sshp.md)`) since they live in the same directory.
 
-### 3. `README.md` — six edits
+### 3. `wrappers/sshX.sh` — regenerated, never hand-edited
+
+After step 1, run:
+
+```sh
+sh scripts/sync-wrappers.sh
+```
+
+This rebuilds `wrappers/*.sh` from `install.sh`'s `emit_fn()` output. Commit the new `wrappers/sshX.sh` alongside the `install.sh` change — the two must agree, and committing both makes the file diff reviewable.
+
+Never edit `wrappers/sshX.sh` directly. The sync script will overwrite hand-edits the next time anyone runs it.
+
+### 4. `README.md` — six edits
 
 1. **Lede paragraph count** ("Eleven small POSIX shell wrappers …"). Spelled out, not numeric.
-2. **The wrappers table.** Add a row. Keep it in the same order as `ALL_WRAPPERS`.
+2. **The wrappers table.** Add a row. Keep it in the same order as `ALL_WRAPPERS`. Link target is `docs/sshX.md`.
 3. **"Why?" section bullets.** Add a one-line scenario explaining the problem the wrapper fixes.
 4. **Usage code block.** Add an example invocation alongside the others.
-5. **Per-wrapper docs link list** at the end of "Usage". Append your wrapper to the appropriate category line.
-6. **Project layout glob** under "Development". Update the `ssh{…}.md` brace expansion to include your new doc.
+5. **Per-wrapper docs link list** at the end of "Usage". Append your wrapper to the appropriate category line. Link target is `docs/sshX.md`.
+6. **Project layout glob** under "Development". Update the `ssh{…}.sh` brace expansion in `wrappers/` and the `ssh{…}.md` glob in `docs/` to include your new wrapper.
 
-### 4. `sshh.md` — three count updates
+### 5. `docs/sshh.md` — three count updates
 
 1. The `sshh                # overview of all N wrappers` example.
 2. The sample overview block (add a `✓ sshX [cat] description` line, bump the `N installed · 0 not installed` footer).
 3. The "across all N in one go" line near the bottom.
 
-### 5. `index.html` — seven edits
+### 6. `index.html` — eight edits
 
 The landing page is hand-maintained HTML; there's no template. Be careful — the `<title>`, three meta descriptions, the badge, the card grid, the install tab(s), the features list, and the footer all reference the count or the wrapper name list.
 
@@ -135,14 +147,14 @@ The landing page is hand-maintained HTML; there's no template. Be careful — th
 3. **`<meta property="og:description">`** and **`<meta property="og:image:alt">`** — same.
 4. **`<meta name="twitter:description">`** — also lists every wrapper name. Add yours in `ALL_WRAPPERS` order.
 5. **`<span class="badge">N wrappers</span>`** — numeric count.
-6. **`.grid` card.** Copy the structure of an existing card, pick an icon from the `<symbol>` defs at the top of the file (or add a new one if none fit), and write a one-paragraph blurb mirroring the wrapper's "When to use it" framing. Insert the card next to its category-mates so the visual grouping matches the table.
+6. **`.grid` card.** Copy the structure of an existing card, pick an icon from the `<symbol>` defs at the top of the file (or add a new one if none fit), and write a one-paragraph blurb mirroring the wrapper's "When to use it" framing. Insert the card next to its category-mates so the visual grouping matches the table. The card's `href` is `https://github.com/pacnpal/ssh-wrappers/blob/master/docs/sshX.md` — note the `/docs/` prefix.
 7. **Install tabs** (`.tabs > .tab[data-cmd]`) — if your wrapper joins one of the curated subsets ("Auth only", "Connection only"), append the name to that tab's `data-cmd`.
 8. **`<ul class="features">`** — "default installs all N" line.
 9. **`<footer>`** — "N wrappers" line.
 
 If you added a new category (rare — see "Pick a category" above), also update the `.cats` strip near the top of the body.
 
-### 6. `assets/social-card.svg` + re-render `assets/social-card.png`
+### 7. `assets/social-card.svg` + re-render `assets/social-card.png`
 
 This is the file most contributors forget. The social card is the 1280×640 image GitHub and Twitter show as the OG preview, and it visibly lists every wrapper as a chip — so missing it means a stale image ships everywhere the repo is linked.
 
@@ -184,37 +196,41 @@ Edits to `social-card.svg`:
 
 `assets/logo.svg` and `assets/logo.png` do not need re-rendering — they have no text and no wrapper count.
 
-### 7. `.github/workflows/shellcheck.yml`
+### 8. `.github/workflows/shellcheck.yml`
 
-No edits. It lints `install.sh` as-is. Don't add per-wrapper CI; the installer is the only shell file in the repo.
+No edits. It lints `install.sh` and `scripts/sync-wrappers.sh` as-is. Don't add per-wrapper CI; those are the only shell files in the repo.
 
 ## Verify before opening the PR
 
-Run all four checks. They're fast and catch the mistakes that have actually happened.
+Run all five checks. They're fast and catch the mistakes that have actually happened.
 
 ```sh
-# 1. Lint the installer.
-shellcheck --shell=sh install.sh
+# 1. Lint the shell scripts.
+shellcheck --shell=sh install.sh scripts/sync-wrappers.sh
 
 # 2. Smoke test: install only the new wrapper into a temp file, inspect it.
 tmp=$(mktemp)
 SSH_WRAPPERS_RC="$tmp" sh install.sh sshX
-grep -A2 "^sshX()" "$tmp"   # function body present?
-grep -F "# sshX —"    "$tmp"   # comment header present?
+grep -A2 "^sshX()" "$tmp"     # function body present?
+grep -F "# sshX —" "$tmp"     # comment header present?
 
 # 3. Smoke test: install everything, source it, run sshh.
 tmp=$(mktemp)
 SSH_WRAPPERS_RC="$tmp" sh install.sh
-bash -c ". '$tmp'; sshh"          # overview lists the new wrapper with ✓
-bash -c ". '$tmp'; sshh sshX"     # detail view renders cleanly
+bash -c ". '$tmp'; sshh"           # overview lists the new wrapper with ✓
+bash -c ". '$tmp'; sshh sshX"      # detail view renders cleanly
 rm -f "$tmp"
 
-# 4. Count audit. None of these should match anything stale.
+# 4. Verify wrappers/ is in sync with install.sh.
+sh scripts/sync-wrappers.sh
+git diff --exit-code wrappers/    # no diff = in sync
+
+# 5. Count audit. None of these should match anything stale.
 grep -rn -E '\b(Ten|ten|Eleven|eleven|Twelve|twelve)\b|[0-9]+ wrappers|all [0-9]+' \
     --include='*.md' --include='*.html' --include='*.sh' .
 ```
 
-If the count audit shows a number you didn't intend to change, that's a stale reference — fix it before the PR.
+If the count audit shows a number you didn't intend to change, that's a stale reference — fix it before the PR. If `git diff --exit-code wrappers/` exits non-zero, you edited `install.sh` without re-running the sync script (or you edited `wrappers/` directly — don't).
 
 ## What *not* to add
 

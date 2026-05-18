@@ -5,10 +5,12 @@ on:
     branches: [master]
     paths:
       - 'install.sh'
+      - 'scripts/**.sh'
       - '.github/workflows/shellcheck.yml'
   pull_request:
     paths:
       - 'install.sh'
+      - 'scripts/**.sh'
       - '.github/workflows/shellcheck.yml'
   workflow_dispatch:
 
@@ -21,4 +23,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run shellcheck
-        run: shellcheck --shell=sh install.sh
+        run: shellcheck --shell=sh install.sh scripts/sync-wrappers.sh
