@@ -14,7 +14,7 @@
   <img alt="views" src="https://visitor-badge.laobi.icu/badge?page_id=pacnpal.ssh-wrappers">
 </p>
 
-Ten small POSIX shell wrappers around `ssh` that fix the most common day-to-day annoyances. Each is a one-line tweak of `ssh` options, packaged behind a name short enough that you'll actually use it. Plus a built-in `sshh` to remind you which is which.
+Eleven small POSIX shell wrappers around `ssh` (and `ssh-copy-id`) that fix the most common day-to-day annoyances. Each is a one-line tweak of options, packaged behind a name short enough that you'll actually use it. Plus a built-in `sshh` to remind you which is which.
 
 Homepage: <https://pacnpal.github.io/ssh-wrappers/>
 
@@ -25,6 +25,7 @@ Homepage: <https://pacnpal.github.io/ssh-wrappers/>
 | [`sshp`](sshp.md) | Force **p**assword authentication (disable pubkey for one connection) | **p**assword |
 | [`sshi`](sshi.md) | Use only explicitly configured **i**dentities (`IdentitiesOnly=yes`) | **i**dentities |
 | [`ssha`](ssha.md) | Forward your local ssh-**a**gent to the remote host (`-A`) | **a**gent |
+| [`sshcp`](sshcp.md) | **C**o**p**y a key with `ssh-copy-id` without pubkey auth (skip the `MaxAuthTries` burn) | **c**o**p**y |
 | [`sshq`](sshq.md) | **Q**uiet/quick: skip host key prompts, don't pollute `known_hosts` | **q**uick |
 | [`sshk`](sshk.md) | **K**eepalive: don't drop on idle (`ServerAlive*`) | **k**eepalive |
 | [`sshm`](sshm.md) | **M**ultiplex: instant subsequent connections (`ControlMaster`) | **m**ultiplex |
@@ -41,6 +42,7 @@ These wrappers turn each fix into a one-character mnemonic:
 
 - Agent has too many keys, server says `Too many authentication failures` → `sshi`.
 - Need to type a password but `ssh` keeps offering keys instead → `sshp`.
+- Pushing your key to a fresh server but `ssh-copy-id` fails before the password prompt → `sshcp`.
 - Connection dropped while you got coffee → `sshk`.
 - Spinning up the same host's connection 50 times in a deploy script → `sshm`.
 - Run `sudo` over ssh, get `sudo: a terminal is required` → `ssht`.
@@ -125,6 +127,7 @@ Every wrapper accepts the same arguments as `ssh`:
 sshp user@host                                  # password instead of keys
 sshi -i ~/.ssh/work_ed25519 user@host           # only this key
 ssha bastion                                    # forward agent
+sshcp user@new-host                             # push key, skip pubkey auth
 sshq ec2-user@10.0.0.42                         # ephemeral cloud VM
 sshk prod-bastion 'tail -f /var/log/syslog'     # long idle session
 sshm work-bastion                               # then re-run; instant
@@ -137,7 +140,7 @@ sshh sshm                                       # detail for one wrapper
 
 Read the per-wrapper docs for what each option actually does, security tradeoffs, and `~/.ssh/config` equivalents:
 
-- [sshp](sshp.md) · [sshi](sshi.md) · [ssha](ssha.md) — auth
+- [sshp](sshp.md) · [sshi](sshi.md) · [ssha](ssha.md) · [sshcp](sshcp.md) — auth
 - [sshq](sshq.md) — trust
 - [sshk](sshk.md) · [sshm](sshm.md) — connection lifetime
 - [ssht](ssht.md) · [sshc](sshc.md) — I/O
@@ -157,6 +160,8 @@ No build step, no runtime dependencies beyond what comes with your OS.
 **`Too many authentication failures`** — your agent has more keys than the server's `MaxAuthTries` (default 6). Use [`sshi`](sshi.md) to offer only one specific key, or [`sshp`](sshp.md) to skip pubkey entirely.
 
 **`Permission denied (publickey)` with `sshp`** — the server has `PasswordAuthentication no`. No client-side wrapper can fix this; the server must allow password auth.
+
+**`ssh-copy-id` exits with `Too many authentication failures` before asking for a password** — your agent's loaded keys are exhausting `MaxAuthTries` before the password prompt. Use [`sshcp`](sshcp.md) instead of plain `ssh-copy-id`.
 
 **`sudo: a terminal is required` over ssh** — pass the command through [`ssht`](ssht.md) instead of plain `ssh`.
 
@@ -187,7 +192,7 @@ Project layout:
 ├── install.sh                # the installer (source of truth for function bodies)
 ├── README.md                 # this file
 ├── index.html                # GitHub Pages landing page
-├── ssh{p,i,a,q,k,m,t,c,v,h}.md # per-wrapper docs
+├── ssh{p,i,a,cp,q,k,m,t,c,v,h}.md # per-wrapper docs
 ├── assets/
 │   ├── logo.svg              # the mark
 │   ├── logo.png              # rendered 512x512

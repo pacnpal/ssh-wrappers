@@ -23,7 +23,7 @@ set -eu
 BEGIN_MARKER='# >>> ssh-wrappers >>>'
 END_MARKER='# <<< ssh-wrappers <<<'
 
-ALL_WRAPPERS="sshp sshi ssha sshq sshk sshm ssht sshc sshv sshh"
+ALL_WRAPPERS="sshp sshi ssha sshcp sshq sshk sshm ssht sshc sshv sshh"
 
 # Print a single function definition. Any change here is the source of truth.
 emit_fn() {
@@ -95,6 +95,17 @@ ssha() {
 }
 EOF
             ;;
+        sshcp) cat <<'EOF'
+# sshcp — push a key with ssh-copy-id but skip pubkey auth so the
+# agent's loaded keys don't burn through MaxAuthTries before the
+# password prompt. The whole reason you're running ssh-copy-id is that
+# you don't have a key on the remote yet — offering ones it won't
+# accept just wastes attempts.
+sshcp() {
+    ssh-copy-id -o PubkeyAuthentication=no "$@"
+}
+EOF
+            ;;
         sshc) cat <<'EOF'
 # sshc — enable compression. Worth it on slow / high-latency links and
 # for transferring lots of text (logs, stdout from remote builds).
@@ -119,6 +130,7 @@ sshh() {
     _sshh_data='sshp|auth|force password auth (disable pubkey)|sshp user@host
 sshi|auth|use only explicit identities (IdentitiesOnly=yes)|sshi -i ~/.ssh/work_ed25519 user@host
 ssha|auth|forward your local ssh-agent (-A) — trusted hosts only|ssha bastion
+sshcp|auth|ssh-copy-id without pubkey auth (skip MaxAuthTries burn)|sshcp user@host
 sshq|trust|quick — skip host key checks (ephemeral hosts)|sshq ec2-user@10.0.0.42
 sshk|conn|keepalive — do not drop on idle|sshk prod-host
 sshm|conn|multiplex — instant subsequent reconnects|sshm work-bastion
@@ -300,6 +312,7 @@ Fish uses a different function syntax. Add what you need to ~/.config/fish/confi
     function sshp ; ssh -o PubkeyAuthentication=no $argv ; end
     function sshi ; ssh -o IdentitiesOnly=yes $argv ; end
     function ssha ; ssh -A $argv ; end
+    function sshcp ; ssh-copy-id -o PubkeyAuthentication=no $argv ; end
     function sshq ; ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR $argv ; end
     function sshk ; ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=4 -o TCPKeepAlive=yes $argv ; end
     function sshm ; ssh -o ControlMaster=auto -o ControlPath=$HOME/.ssh/cm-%r@%h:%p -o ControlPersist=10m $argv ; end

@@ -7,7 +7,7 @@
 `sshh` is the help / introspection wrapper. With no arguments it shows every wrapper in the package, marks which ones are installed in the current shell, and prints a one-line description and category for each. Pass a wrapper name and you get the detail view: status, example, and a link to the full doc.
 
 ```sh
-sshh                # overview of all 10 wrappers
+sshh                # overview of all 11 wrappers
 sshh sshp           # detail for one wrapper
 sshh sshp sshk      # detail for several
 ```
@@ -25,6 +25,7 @@ https://pacnpal.github.io/ssh-wrappers/
   ✓  sshp   [auth]    force password auth (disable pubkey)
   ✓  sshi   [auth]    use only explicit identities (IdentitiesOnly=yes)
   ✓  ssha   [auth]    forward your local ssh-agent (-A) — trusted hosts only
+  ✓  sshcp  [auth]    ssh-copy-id without pubkey auth (skip MaxAuthTries burn)
   ✓  sshq   [trust]   quick — skip host key checks (ephemeral hosts)
   ✓  sshk   [conn]    keepalive — do not drop on idle
   ✓  sshm   [conn]    multiplex — instant subsequent reconnects
@@ -33,7 +34,7 @@ https://pacnpal.github.io/ssh-wrappers/
   ✓  sshv   [debug]   verbose (-vvv) — see auth attempts and KEX
   ✓  sshh   [meta]    this help (run `sshh <name>` for detail)
 
-  10 installed · 0 not installed
+  11 installed · 0 not installed
 
 Detail:        sshh <name>          e.g. sshh sshp
 Uninstall:     curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh -s -- --uninstall
@@ -73,7 +74,7 @@ Status, an example invocation, and a link straight to the full doc.
   curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh -s -- --force
   ```
 
-- **`type sshh`** is the one-liner version: `type` will tell you whether `sshh` (or any wrapper) is a function. `sshh` itself runs that check across all 10 in one go.
+- **`type sshh`** is the one-liner version: `type` will tell you whether `sshh` (or any wrapper) is a function. `sshh` itself runs that check across all 11 in one go.
 
 - **No internal helpers leak.** `sshh` uses temp variables prefixed `_sshh_`, all `unset` before returning. Running `sshh` doesn't pollute your shell with helper functions.
 
