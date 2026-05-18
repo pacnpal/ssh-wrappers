@@ -205,6 +205,7 @@ Project layout:
 .
 ├── README.md                 # this file
 ├── LICENSE
+├── CHANGELOG.md              # release history; edit the [Unreleased] section
 ├── install.sh                # the installer (source of truth for function bodies)
 ├── index.html                # GitHub Pages landing page
 ├── wrappers/                 # standalone copies of each wrapper, one .sh per

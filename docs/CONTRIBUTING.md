@@ -138,7 +138,7 @@ Never edit `wrappers/sshX.sh` directly. The sync script will overwrite hand-edit
 2. The sample overview block (add a `✓ sshX [cat] description` line, bump the `N installed · 0 not installed` footer).
 3. The "across all N in one go" line near the bottom.
 
-### 6. `index.html` — eight edits
+### 6. `index.html` — nine edits
 
 The landing page is hand-maintained HTML; there's no template. Be careful — the `<title>`, three meta descriptions, the badge, the card grid, the install tab(s), the features list, and the footer all reference the count or the wrapper name list.
 
@@ -200,9 +200,13 @@ Edits to `social-card.svg`:
 
 No edits. It lints `install.sh` and `scripts/sync-wrappers.sh` as-is. Don't add per-wrapper CI; those are the only shell files in the repo.
 
+### 9. `../CHANGELOG.md` — add to `[Unreleased]`
+
+Append a one-line bullet under `### Added` (or `### Changed` / `### Fixed`, as appropriate) describing what the wrapper does and the painpoint it solves. Don't create a new `[vX.Y.Z]` section — that happens at release time (see [Release](#release) below).
+
 ## Verify before opening the PR
 
-Run all five checks. They're fast and catch the mistakes that have actually happened.
+Run all six checks. They're fast and catch the mistakes that have actually happened.
 
 ```sh
 # 1. Lint the shell scripts.
@@ -228,6 +232,9 @@ git diff --exit-code wrappers/    # no diff = in sync
 # 5. Count audit. None of these should match anything stale.
 grep -rn -E '\b(Ten|ten|Eleven|eleven|Twelve|twelve)\b|[0-9]+ wrappers|all [0-9]+' \
     --include='*.md' --include='*.html' --include='*.sh' .
+
+# 6. CHANGELOG has a new bullet under [Unreleased].
+grep -A1 '## \[Unreleased\]' CHANGELOG.md | tail -1
 ```
 
 If the count audit shows a number you didn't intend to change, that's a stale reference — fix it before the PR. If `git diff --exit-code wrappers/` exits non-zero, you edited `install.sh` without re-running the sync script (or you edited `wrappers/` directly — don't).
@@ -242,4 +249,9 @@ If the count audit shows a number you didn't intend to change, that's a stale re
 
 ## Release
 
-Follow the standard release flow (CHANGELOG entry, `gh release create vX.Y.Z` — never `git tag` directly). Adding a wrapper is a minor-version bump (new feature, no breakage).
+1. Move your changes from the `[Unreleased]` section of [`../CHANGELOG.md`](../CHANGELOG.md) into a new dated `[vX.Y.Z]` section.
+2. Commit on `master`: `git commit -m "release: vX.Y.Z - …"`.
+3. Push.
+4. Cut the release with `gh release create vX.Y.Z --title "…" --notes-file <curated>` — this creates the tag *and* the GitHub Release atomically.
+
+Never run `git tag` followed by `git push origin <tag>`. `gh release create` is the single command that handles both. Adding a wrapper is a minor-version bump (new feature, no breakage).
