@@ -142,7 +142,49 @@ The landing page is hand-maintained HTML; there's no template. Be careful — th
 
 If you added a new category (rare — see "Pick a category" above), also update the `.cats` strip near the top of the body.
 
-### 6. `.github/workflows/shellcheck.yml`
+### 6. `assets/social-card.svg` + re-render `assets/social-card.png`
+
+This is the file most contributors forget. The social card is the 1280×640 image GitHub and Twitter show as the OG preview, and it visibly lists every wrapper as a chip — so missing it means a stale image ships everywhere the repo is linked.
+
+Edits to `social-card.svg`:
+
+1. **`<svg aria-label="…">`** — update the count and the "around ssh" phrase if you added support for a new underlying tool.
+2. **"N wrappers" pill** — the `<text>` inside the first pill at the top.
+3. **Tagline** — only if you've changed the framing (e.g. added `ssh-copy-id` as a second underlying tool, like `sshcp` did).
+4. **Chip grid** — add a chip. Current layout is 5+5+1: two full rows of 5 plus `sshh` as a featured centered chip on row 3. Each chip is `216×56` with a `14`-unit gap. A chip is:
+
+   ```xml
+   <g transform="translate(X, Y)">
+     <rect width="216" height="56" rx="12" fill="#111827" stroke="#334155" stroke-width="1"/>
+     <circle cx="30" cy="28" r="14" fill="#312e81"/>
+     <g transform="translate(22, 20)" fill="none" stroke="#a78bfa" stroke-width="2.4"
+        stroke-linecap="round" stroke-linejoin="round">
+       <!-- 16×16 icon paths here -->
+     </g>
+     <text x="58" y="26" font-family="ui-monospace, SF Mono, Menlo, monospace"
+           font-size="17" font-weight="700" fill="#f1f5f9">sshX</text>
+     <text x="58" y="44" font-size="12" fill="#94a3b8">short label</text>
+   </g>
+   ```
+
+   Adding a 12th wrapper breaks the 5+5+1 layout — you'll need to re-pack to 6+5+1, 4+4+4, or 6+6 (the last would let `sshh` rejoin the main grid). If you pick a layout that changes row count, slide `<!-- install command -->`, `<!-- post-install hint -->`, and the footer `<text>` down by the same delta so they don't collide with the new bottom row.
+
+   Don't reuse another wrapper's icon. Pick something semantically tied to what the wrapper does (sshcp uses an upload arrow → push-key motion). Keep paths within a 16×16 box so the existing inner-circle and translate offsets still apply.
+
+5. **Re-render the PNG.** The SVG is the source of truth; the PNG is what social previewers actually load. They cache aggressively, so an outdated PNG with a fresh SVG means stale previews for weeks.
+
+   ```sh
+   rsvg-convert -w 1280 -h 640 assets/social-card.svg -o assets/social-card.png
+   file assets/social-card.png   # must report: PNG image data, 1280 x 640
+   ```
+
+   Commit *both* the `.svg` and the regenerated `.png`. CI does not auto-render.
+
+6. **Eyeball the PNG.** Open it. Check the new chip lines up with the grid, the icon is visible at the rendered size (the icon is ~16×16 SVG units → ~16px at 1× output), the text isn't clipped, and nothing collides with the install bar or footer.
+
+`assets/logo.svg` and `assets/logo.png` do not need re-rendering — they have no text and no wrapper count.
+
+### 7. `.github/workflows/shellcheck.yml`
 
 No edits. It lints `install.sh` as-is. Don't add per-wrapper CI; the installer is the only shell file in the repo.
 

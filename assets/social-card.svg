@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640" role="img" aria-label="ssh-wrappers — ten small POSIX shell wrappers around ssh">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640" role="img" aria-label="ssh-wrappers — eleven small POSIX shell wrappers around ssh and ssh-copy-id">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0a0e1a"/>
@@ -52,10 +52,10 @@
   <!-- title -->
   <text x="248" y="144" font-family="ui-monospace, SF Mono, Menlo, Consolas, monospace" font-size="84" font-weight="700" fill="url(#title)" letter-spacing="-2">ssh-wrappers</text>
 
-  <!-- "10 wrappers" pill -->
+  <!-- "11 wrappers" pill -->
   <g transform="translate(248, 164)">
     <rect x="0" y="0" width="128" height="30" rx="15" fill="#312e81" stroke="#6366f1" stroke-width="1"/>
-    <text x="64" y="20" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="14" font-weight="600" fill="#a78bfa" text-anchor="middle">10 wrappers</text>
+    <text x="64" y="20" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="14" font-weight="600" fill="#a78bfa" text-anchor="middle">11 wrappers</text>
   </g>
   <!-- "+ sshh: help" pill -->
   <g transform="translate(388, 164)">
@@ -64,13 +64,13 @@
   </g>
 
   <!-- tagline -->
-  <text x="248" y="226" font-family="-apple-system, Segoe UI, system-ui, sans-serif" font-size="22" font-weight="400" fill="#cbd5e1">Small POSIX shell wrappers around <tspan font-family="ui-monospace, SF Mono, Menlo, monospace" fill="#a78bfa">ssh</tspan> that fix the most common annoyances.</text>
+  <text x="248" y="226" font-family="-apple-system, Segoe UI, system-ui, sans-serif" font-size="22" font-weight="400" fill="#cbd5e1">Small POSIX shell wrappers around <tspan font-family="ui-monospace, SF Mono, Menlo, monospace" fill="#a78bfa">ssh</tspan> &amp; <tspan font-family="ui-monospace, SF Mono, Menlo, monospace" fill="#a78bfa">ssh-copy-id</tspan> that fix the common annoyances.</text>
 
-  <!-- 5x2 chip grid: 10 chips, 216 wide × 56 tall, 14 gap horizontal, 14 gap vertical -->
-  <!-- columns at x = 72, 302, 532, 762, 992; rows at y = 280, 350 -->
+  <!-- chip grid: 11 chips, 216 wide × 56 tall, 14 gap horizontal/vertical -->
+  <!-- columns at x = 72, 302, 532, 762, 992; rows at y = 280, 350, 420 (sshh centered) -->
   <g font-family="-apple-system, Segoe UI, system-ui, sans-serif">
 
-    <!-- ROW 1 -->
+    <!-- ROW 1: auth (sshp, sshi, ssha, sshcp) + trust (sshq) -->
     <!-- sshp -->
     <g transform="translate(72, 280)">
       <rect width="216" height="56" rx="12" fill="#111827" stroke="#334155" stroke-width="1"/>
@@ -106,8 +106,20 @@
       <text x="58" y="26" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="17" font-weight="700" fill="#f1f5f9">ssha</text>
       <text x="58" y="44" font-size="12" fill="#94a3b8">agent forwarding</text>
     </g>
-    <!-- sshq -->
+    <!-- sshcp -->
     <g transform="translate(762, 280)">
+      <rect width="216" height="56" rx="12" fill="#111827" stroke="#334155" stroke-width="1"/>
+      <circle cx="30" cy="28" r="14" fill="#312e81"/>
+      <g transform="translate(22, 20)" fill="none" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 13.5V3"/>
+        <path d="M3.5 7.5L8 3l4.5 4.5"/>
+        <path d="M2 16h12"/>
+      </g>
+      <text x="58" y="26" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="17" font-weight="700" fill="#f1f5f9">sshcp</text>
+      <text x="58" y="44" font-size="12" fill="#94a3b8">push key (ssh-copy-id)</text>
+    </g>
+    <!-- sshq -->
+    <g transform="translate(992, 280)">
       <rect width="216" height="56" rx="12" fill="#111827" stroke="#334155" stroke-width="1"/>
       <circle cx="30" cy="28" r="14" fill="#312e81"/>
       <g transform="translate(22, 20)" fill="none" stroke="#a78bfa" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -116,8 +128,10 @@
       <text x="58" y="26" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="17" font-weight="700" fill="#f1f5f9">sshq</text>
       <text x="58" y="44" font-size="12" fill="#94a3b8">skip host check</text>
     </g>
+
+    <!-- ROW 2: conn (sshk, sshm) + i/o (ssht, sshc) + debug (sshv) -->
     <!-- sshk -->
-    <g transform="translate(992, 280)">
+    <g transform="translate(72, 350)">
       <rect width="216" height="56" rx="12" fill="#111827" stroke="#334155" stroke-width="1"/>
       <circle cx="30" cy="28" r="14" fill="#312e81"/>
       <g transform="translate(22, 20)" fill="none" stroke="#a78bfa" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -126,10 +140,8 @@
       <text x="58" y="26" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="17" font-weight="700" fill="#f1f5f9">sshk</text>
       <text x="58" y="44" font-size="12" fill="#94a3b8">keepalive</text>
     </g>
-
-    <!-- ROW 2 -->
     <!-- sshm -->
-    <g transform="translate(72, 350)">
+    <g transform="translate(302, 350)">
       <rect width="216" height="56" rx="12" fill="#111827" stroke="#334155" stroke-width="1"/>
       <circle cx="30" cy="28" r="14" fill="#312e81"/>
       <g transform="translate(22, 20)" fill="none" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -141,7 +153,7 @@
       <text x="58" y="44" font-size="12" fill="#94a3b8">multiplex</text>
     </g>
     <!-- ssht -->
-    <g transform="translate(302, 350)">
+    <g transform="translate(532, 350)">
       <rect width="216" height="56" rx="12" fill="#111827" stroke="#334155" stroke-width="1"/>
       <circle cx="30" cy="28" r="14" fill="#312e81"/>
       <g transform="translate(22, 20)" fill="none" stroke="#a78bfa" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -151,7 +163,7 @@
       <text x="58" y="44" font-size="12" fill="#94a3b8">force a TTY</text>
     </g>
     <!-- sshc -->
-    <g transform="translate(532, 350)">
+    <g transform="translate(762, 350)">
       <rect width="216" height="56" rx="12" fill="#111827" stroke="#334155" stroke-width="1"/>
       <circle cx="30" cy="28" r="14" fill="#312e81"/>
       <g transform="translate(22, 20)" fill="none" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -162,7 +174,7 @@
       <text x="58" y="44" font-size="12" fill="#94a3b8">compression</text>
     </g>
     <!-- sshv -->
-    <g transform="translate(762, 350)">
+    <g transform="translate(992, 350)">
       <rect width="216" height="56" rx="12" fill="#111827" stroke="#334155" stroke-width="1"/>
       <circle cx="30" cy="28" r="14" fill="#312e81"/>
       <g transform="translate(22, 20)" fill="none" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -172,8 +184,9 @@
       <text x="58" y="26" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="17" font-weight="700" fill="#f1f5f9">sshv</text>
       <text x="58" y="44" font-size="12" fill="#94a3b8">verbose -vvv</text>
     </g>
-    <!-- sshh — accented (the meta wrapper) -->
-    <g transform="translate(992, 350)">
+
+    <!-- ROW 3: sshh, centered, accented (the meta wrapper) -->
+    <g transform="translate(532, 420)">
       <rect width="216" height="56" rx="12" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5"/>
       <circle cx="30" cy="28" r="14" fill="#4338ca"/>
       <g transform="translate(22, 20)" fill="none" stroke="#c4b5fd" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -187,14 +200,14 @@
   </g>
 
   <!-- install command -->
-  <g transform="translate(72, 460)">
+  <g transform="translate(72, 500)">
     <rect width="1136" height="64" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1"/>
     <text x="24" y="40" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="20" fill="#64748b">$</text>
     <text x="48" y="40" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="20" fill="#e2e8f0">curl -fsSL https://pacnpal.github.io/ssh-wrappers/install.sh | sh</text>
   </g>
 
   <!-- post-install hint -->
-  <g transform="translate(72, 542)">
+  <g transform="translate(72, 582)">
     <text font-family="-apple-system, Segoe UI, system-ui, sans-serif" font-size="14" fill="#94a3b8">
       <tspan>then run </tspan>
       <tspan font-family="ui-monospace, SF Mono, Menlo, monospace" fill="#a78bfa">sshh</tspan>
@@ -203,5 +216,5 @@
   </g>
 
   <!-- footer -->
-  <text x="72" y="610" font-family="-apple-system, Segoe UI, system-ui, sans-serif" font-size="14" fill="#64748b">github.com/pacnpal/ssh-wrappers · MIT</text>
+  <text x="72" y="625" font-family="-apple-system, Segoe UI, system-ui, sans-serif" font-size="14" fill="#64748b">github.com/pacnpal/ssh-wrappers · MIT</text>
 </svg>
