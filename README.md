@@ -14,7 +14,9 @@
   <img alt="views" src="https://visitor-badge.laobi.icu/badge?page_id=pacnpal.ssh-wrappers">
 </p>
 
-Eleven small POSIX shell wrappers around `ssh` (and `ssh-copy-id`) that fix the most common day-to-day annoyances. Each is a one-line tweak of options, packaged behind a name short enough that you'll actually use it. Plus a built-in `sshh` to remind you which is which.
+Eleven small POSIX shell wrappers around `ssh` and `ssh-copy-id` that fix the most common day-to-day OpenSSH annoyances — `Too many authentication failures` from agents with too many keys, `client_loop: send disconnect: Broken pipe` on idle sessions, `sudo: a terminal is required to read the password`, `ssh-copy-id` exiting before the password prompt, host-key prompts on ephemeral cloud VMs, reconnect latency on bastion hops, and the rest of the well-known papercuts. Each wrapper is a one-line tweak of options, packaged behind a name short enough that you'll actually use it. Plus a built-in `sshh` to remind you which is which.
+
+Works on macOS, Linux, and any POSIX shell — `zsh`, `bash`, `ksh`, with a fish snippet for copy-paste.
 
 Homepage: <https://pacnpal.github.io/ssh-wrappers/>
 
