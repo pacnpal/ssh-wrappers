@@ -115,11 +115,15 @@ Removes only the marked block; anything else in your rc file is untouched.
 
 ### Fish
 
-Not covered by the installer (different function syntax). Run the installer once to see the snippet you can paste into `~/.config/fish/config.fish`, or copy the bodies straight from the per-wrapper docs.
+Not covered by the installer (different function syntax). Run the installer once to see the snippet you can paste into `~/.config/fish/config.fish`, or copy the bodies straight from the per-wrapper docs in [`docs/`](docs/).
 
 ### Manual
 
-Skip the installer entirely — copy the function definitions you want from the per-wrapper docs into your rc file. Each wrapper's `.md` shows its function definition at the top.
+Skip the installer entirely — three ways:
+
+- Copy the function definition you want from the per-wrapper doc in [`docs/`](docs/) into your rc file (each `docs/sshX.md` shows the function at the top).
+- Source a standalone file directly: `. wrappers/sshX.sh` defines just that one wrapper in your current shell. Files under [`wrappers/`](wrappers/) are regenerated copies of what `install.sh` would write — useful for cherry-picking into your dotfiles.
+- Open `install.sh` and read the `emit_fn()` block — it's the source of truth for every wrapper body.
 
 ## Usage
 

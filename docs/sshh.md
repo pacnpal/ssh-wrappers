@@ -48,7 +48,7 @@ A `✓` (green) means the wrapper is defined in the current shell. A `·` (dim) 
 sshp  [auth]  force password auth (disable pubkey)
   status:   installed
   example:  sshp user@host
-  docs:     https://pacnpal.github.io/ssh-wrappers/sshp.md
+  docs:     https://pacnpal.github.io/ssh-wrappers/docs/sshp.md
 ```
 
 Status, an example invocation, and a link straight to the full doc.
